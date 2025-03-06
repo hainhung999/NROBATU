@@ -1,0 +1,31 @@
+name: Build Unity iOS
+
+on:
+  push:
+    branches:
+      - main  # Chạy khi có commit mới trên nhánh main
+  workflow_dispatch: # Cho phép chạy thủ công từ GitHub Actions
+
+jobs:
+  build:
+    runs-on: macos-latest  # Sử dụng máy Mac để build iOS
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install Unity
+        uses: game-ci/unity-builder@v2
+        with:
+          unityVersion: 2021.3.0f1  # Thay bằng phiên bản Unity của bạn
+
+      - name: Build iOS
+        uses: game-ci/unity-builder@v2
+        with:
+          targetPlatform: iOS
+          unityVersion: 2021.3.0f1
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: iOS-Build
+          path: build/iOS  # Thư mục chứa file build iOS
